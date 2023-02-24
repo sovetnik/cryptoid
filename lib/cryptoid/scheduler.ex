@@ -3,12 +3,13 @@ defmodule Cryptoid.Scheduler do
 
   alias Cryptoid.{Rates, Storage}
 
-  @timeout 5_000
+  @timeout 60_000
 
   def start_link(count) do
     count |> IO.inspect(label: :sl_process)
+
     GenServer.start_link(__MODULE__, count, name: __MODULE__)
-    IO.puts("Scheduler started")
+    |> IO.inspect(label: "Scheduler started")
   end
 
   def init(count) do
@@ -22,9 +23,7 @@ defmodule Cryptoid.Scheduler do
     IO.puts("timeout reached for #{state}")
     rates = Task.async(&Rates.get/0)
 
-    rates
-    |> Task.await()
-    |> Storage.update()
+    rates |> Task.await() |> Storage.update()
 
     {:noreply, state + 1, @timeout}
   end

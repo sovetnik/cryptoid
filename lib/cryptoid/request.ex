@@ -26,6 +26,6 @@ defmodule Cryptoid.Request do
   end
 
   defp request(url, headers, params) do
-    :httpc.request(:get, {url, headers}, [], params: params)
+    :httpc.request(:get, {url, headers}, [{:params, params}], [])
   end
 end

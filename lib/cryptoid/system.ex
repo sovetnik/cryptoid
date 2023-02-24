@@ -11,8 +11,8 @@ defmodule Cryptoid.System do
 
   def start_link(_type, _args) do
     children = [
-      # {Storage, %{}},
-      # {Scheduler, 0}
+      {Storage, %{}},
+      {Scheduler, 0}
     ]
 
     opts = [
