@@ -13,7 +13,8 @@ defmodule Cryptoid.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Cryptoid.PubSub},
       # Start the Endpoint (http/https)
-      CryptoidWeb.Endpoint
+      CryptoidWeb.Endpoint,
+      Cryptoid.System
       # Start a worker by calling: Cryptoid.Worker.start_link(arg)
       # {Cryptoid.Worker, arg}
     ]
