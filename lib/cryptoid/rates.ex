@@ -8,7 +8,7 @@ defmodule Cryptoid.Rates do
     @path
     |> Request.get()
     |> parse()
-    |> Enum.into(%{})
+    |> Map.new()
   end
 
   def parse(%{"data" => data}) do

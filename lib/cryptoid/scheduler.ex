@@ -9,7 +9,7 @@ defmodule Cryptoid.Scheduler do
     count |> IO.inspect(label: :sl_process)
 
     GenServer.start_link(__MODULE__, count, name: __MODULE__)
-    |> IO.inspect(label: "Scheduler started")
+    |> IO.inspect(label: "Scheduler started: " <> inspect(NaiveDateTime.local_now()))
   end
 
   def init(count) do
@@ -21,9 +21,12 @@ defmodule Cryptoid.Scheduler do
 
   def handle_info(:timeout, state) do
     IO.puts("timeout reached for #{state}")
-    rates = Task.async(&Rates.get/0)
 
-    rates |> Task.await() |> Storage.update()
+    Rates
+    |> Function.capture(:get, 0)
+    |> Task.async()
+    |> Task.await()
+    |> Storage.update()
 
     {:noreply, state + 1, @timeout}
   end

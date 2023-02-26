@@ -3,9 +3,6 @@ defmodule Cryptoid.Request do
 
   @base_url 'https://pro-api.coinmarketcap.com'
 
-  :inets.start()
-  :ssl.start()
-
   def get(path, params \\ []) do
     url = @base_url ++ path
 

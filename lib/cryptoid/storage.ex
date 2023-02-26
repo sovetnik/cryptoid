@@ -11,22 +11,18 @@ defmodule Cryptoid.Storage do
       fn -> Rates.get() end,
       name: __MODULE__
     )
-    |> IO.inspect(label: "Storage started")
+    |> IO.inspect(label: "Storage started: " <> inspect(NaiveDateTime.local_now()))
   end
 
   def currencies do
-    Map.keys(rates())
+    Agent.get(__MODULE__, &Map.keys(&1))
   end
 
   def rate(currency) do
     %Rate{
       name: currency,
-      price: rates()[currency]
+      price: Agent.get(__MODULE__, & &1[currency])
     }
-  end
-
-  def rates() do
-    Agent.get(__MODULE__, & &1)
   end
 
   def update(rates) do
@@ -34,6 +30,6 @@ defmodule Cryptoid.Storage do
       __MODULE__,
       fn _state -> rates end
     )
-    |> IO.inspect(label: "New rates set")
+    |> IO.inspect(label: "New rates set: " <> inspect(NaiveDateTime.local_now()))
   end
 end
