@@ -3,10 +3,10 @@ defmodule Cryptoid.Request do
 
   @base_url 'https://pro-api.coinmarketcap.com'
 
-  def get(path, params \\ []) do
+  def get(path) do
     url = @base_url ++ path
 
-    {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} = request(url, headers(), params)
+    {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} = request(url, headers())
 
     Jason.decode!(body)
   end
@@ -22,7 +22,7 @@ defmodule Cryptoid.Request do
     ]
   end
 
-  defp request(url, headers, params) do
-    :httpc.request(:get, {url, headers}, [{:params, params}], [])
+  defp request(url, headers) do
+    :httpc.request(:get, {url, headers}, [], [])
   end
 end
