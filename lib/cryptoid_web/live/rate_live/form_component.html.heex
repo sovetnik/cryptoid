@@ -1,0 +1,23 @@
+<div>
+  <.form
+    let={f}
+    for={:rate}
+    id="currency-form"
+    phx-change="change"
+    phx_disable_with="Getting rate..."
+  >
+    <div class="row mb-3">
+      <div class="col-sm-10">
+        <%= select(
+          f,
+          :currency,
+          @currencies,
+          prompt: "Choose currency",
+          selected: @selected_currency,
+          class: "form-control form-control-sm"
+        ) %>
+      </div>
+    </div>
+  </.form>
+</div>
+

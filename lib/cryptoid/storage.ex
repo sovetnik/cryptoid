@@ -4,6 +4,7 @@ defmodule Cryptoid.Storage do
   use Agent
 
   alias Cryptoid.Rates
+  alias Cryptoid.Rates.Rate
 
   def start_link(_initial_value) do
     Agent.start_link(
@@ -18,7 +19,10 @@ defmodule Cryptoid.Storage do
   end
 
   def rate(currency) do
-    rates()[currency]
+    %Rate{
+      name: currency,
+      price: rates()[currency]
+    }
   end
 
   def rates() do
