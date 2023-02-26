@@ -2,6 +2,7 @@ defmodule Cryptoid.Scheduler do
   use GenServer
 
   alias Cryptoid.{Rates, Storage}
+  alias Phoenix.PubSub
 
   @timeout 60_000
 
@@ -27,6 +28,12 @@ defmodule Cryptoid.Scheduler do
     |> Task.async()
     |> Task.await()
     |> Storage.update()
+
+    PubSub.broadcast(
+      Cryptoid.PubSub,
+      "rates",
+      :rates_updated
+    )
 
     {:noreply, state + 1, @timeout}
   end
