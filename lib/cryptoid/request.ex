@@ -3,12 +3,24 @@ defmodule Cryptoid.Request do
 
   @base_url 'https://pro-api.coinmarketcap.com'
 
+  require Logger
+
   def get(path) do
-    url = @base_url ++ path
+    @base_url
+    |> Kernel.++(path)
+    |> request(headers())
+    |> handle_response()
+    |> Jason.decode!()
+  end
 
-    {:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}} = request(url, headers())
+  def handle_response({:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}}) do
+    Logger.notice("Got rates: " <> inspect(NaiveDateTime.local_now()))
+    body
+  end
 
-    Jason.decode!(body)
+  def handle_response({:ok, {{'HTTP/1.1', 404, 'Not Found'}, _headers, body}}) do
+    Logger.error(body)
+    body
   end
 
   defp headers do

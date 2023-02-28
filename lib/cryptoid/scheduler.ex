@@ -1,5 +1,6 @@
 defmodule Cryptoid.Scheduler do
   use GenServer
+  require Logger
 
   alias Cryptoid.{Rates, Storage}
   alias Phoenix.PubSub
@@ -7,21 +8,18 @@ defmodule Cryptoid.Scheduler do
   @timeout 60_000
 
   def start_link(count) do
-    count |> IO.inspect(label: :sl_process)
+    Logger.notice("Scheduler started: " <> inspect(NaiveDateTime.local_now()))
 
     GenServer.start_link(__MODULE__, count, name: __MODULE__)
-    |> IO.inspect(label: "Scheduler started: " <> inspect(NaiveDateTime.local_now()))
   end
 
   def init(count) do
-    count
-    |> IO.inspect(label: :pocess_init)
-
+    Logger.notice("Scheduler initialized: " <> to_string(count))
     {:ok, count, @timeout}
   end
 
   def handle_info(:timeout, state) do
-    IO.puts("timeout reached for #{state}")
+    Logger.notice("Getting new rates: " <> to_string(state) <> inspect(NaiveDateTime.local_now()))
 
     Rates
     |> Function.capture(:get, 0)

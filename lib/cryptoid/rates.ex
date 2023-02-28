@@ -12,7 +12,7 @@ defmodule Cryptoid.Rates do
   end
 
   def parse(%{"data" => data}) do
-    data |> Enum.map(fn element -> parse(element) end)
+    Enum.map(data, &parse/1)
   end
 
   def parse(%{
