@@ -1,0 +1,11 @@
+<h1>Crypto rates from CoinMarketCap </h1>
+
+<.live_component
+  module={CryptoidWeb.RateLive.FormComponent}
+  id={"rate-form"}
+  currencies={@currencies}
+  selected_currency={@selected_currency}
+  rate={@rate}
+/>
+
+<h2><%= @rate.name %>: $ <%= @rate.price %></h2>

@@ -18,6 +18,8 @@ defmodule CryptoidWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    live "/rates", RateLive.Index, :index
+    live "/rates/:currency", RateLive.Show, :show
   end
 
   # Other scopes may use custom stacks.
