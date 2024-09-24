@@ -1,7 +1,7 @@
 defmodule Cryptoid.Request do
   @moduledoc "CoinMarketCap api request"
 
-  @base_url 'https://pro-api.coinmarketcap.com'
+  @base_url ~c"https://pro-api.coinmarketcap.com"
 
   require Logger
 
@@ -13,12 +13,12 @@ defmodule Cryptoid.Request do
     |> Jason.decode!()
   end
 
-  def handle_response({:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, body}}) do
+  def handle_response({:ok, {{~c"HTTP/1.1", 200, ~c"OK"}, _headers, body}}) do
     Logger.notice("Got rates: " <> inspect(NaiveDateTime.local_now()))
     body
   end
 
-  def handle_response({:ok, {{'HTTP/1.1', 404, 'Not Found'}, _headers, body}}) do
+  def handle_response({:ok, {{~c"HTTP/1.1", 404, ~c"Not Found"}, _headers, body}}) do
     Logger.error(body)
     body
   end
@@ -29,8 +29,8 @@ defmodule Cryptoid.Request do
       |> String.to_charlist()
 
     [
-      {'accept', 'application/json'},
-      {'X-CMC_PRO_API_KEY', api_key}
+      {~c"accept", ~c"application/json"},
+      {~c"X-CMC_PRO_API_KEY", api_key}
     ]
   end
 

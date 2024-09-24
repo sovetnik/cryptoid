@@ -1,6 +1,6 @@
 defmodule Cryptoid.Rates do
   @moduledoc "Rates parser"
-  @path '/v1/cryptocurrency/listings/latest'
+  @path ~c"/v1/cryptocurrency/listings/latest"
 
   alias Cryptoid.Request
 
